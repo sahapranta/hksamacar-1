@@ -1,4 +1,4 @@
-
+//4444444
 How can I check if PHP on my webserver supports sessions?
 leave a comment »
 
