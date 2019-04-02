@@ -1,86 +1,11 @@
-<?php session_start();?>
-<?php session_start();?>
-<!DOCTYPE html>
-<html>
-<head>
-
-<title>Hare Krishna Samacar</title>
+<?php include "session_check.php";?>
+<?php include 'Layout/header.php';?>
 
 
-  <meta charset="utf-8">
- 
- <link rel="shortcut icon" href="favicon1.ico" />
- <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.bundle.min.js">
- <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js">
- <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
- 
- <link href="https://fonts.googleapis.com/css?family=Leckerli+One" rel="stylesheet">
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
- 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
- 
- 
-
-<style type="text/css">
-
-
-body, html, .container-fluid {
-     height: 100%;
-}
- 
- 
-/* ---Start of Wrapper style ---- */
-
-#wrapper	{
-		background-color: #787878;
-	}
-
-.card-header	{
-	background-color: #3c3c3c;
-	max-height: 40px;
-	padding: 5px;
-	}
-
-.card-link {	
-	color: white;
-	}
-	
-.card-link:Hover {	
-	color: yellow;
-	}
-	
-.card-body {
-	padding: 5px;
-	background-color: #f0f0f0;
-	
-	}
-	
-.card-body a {	
-	color: black;
-	}
-
-
-
-
-/* ---end of Wrapper style ---- */
-
-
-
-</style>
-
-</head>
 <script>
 var mod_val;
 function modFunction(val_mod){
-
   document.getElementById("ag_name_mod1").value = val_mod[1];
-
-  
-
-
 }
 </script>
 <body>
@@ -89,17 +14,17 @@ function modFunction(val_mod){
   <div class="modal" id="myModal">
     <div class="modal-dialog">
       <div class="modal-content">
-      
+
         <!-- Modal Header -->
         <div class="modal-header">
           <h4 class="modal-title"id="ag_name_head_mod"></h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
-        
+
         <!-- Modal body -->
         <div class="modal-body">
-        
- 
+
+
         <h3 id="agent_number_mod"></h3>
         <h3 id="trans_id_mod"></h3>
         <h3 id="ag_name_mod"></h3>
@@ -112,166 +37,77 @@ function modFunction(val_mod){
         <h3 id="ag_mobile2_mod"></h3>
         <h3 id="ag_copies_mod"></h3>
         <h3 id="ag_email_mod"></h3>
-       
+
         <h3 id="ag_comment_mod"></h3>
 
 
-        
-         
+
+
         </div>
-        
+
         <!-- Modal footer -->
         <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
         </div>
-        
+
       </div>
     </div>
   </div>
-  
+
 </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
+<?php include_once 'config/db.php';?>
 <?php
-$servername = "localhost";
-$username = "HKSamacar_local";
-$password = "Jpsk/1866";
-$dbname = "HareKrishnaSamacar";
-
-// Create connection
-
-?> 
- <?php
- 
-
-// Create connection
-$conn_id = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn_id->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-mysqli_set_charset($conn_id,"utf8");
 $sql_id = "SELECT MAX(ID_EN)as maxid FROM tblMem where ID_EN <10000";
-$result_id = $conn_id->query($sql_id);
+$result_id = $conn_all->query($sql_id);
 
 if ($result_id->num_rows > 0) {
     // output data of each row
     $row = $result_id->fetch_assoc();
-          $GLOBALS['maxid']= $row["maxid"]+1;
-    
+    $GLOBALS['maxid'] = $row["maxid"] + 1;
+
 } else {
     echo "0 results";
 }
-$conn_id->close();
-?> 
 
+$sql_id_cour = "SELECT MAX(ID_EN)as maxid_cour FROM tblMem where ID_EN <96";
+$result_id_cour = $conn_all->query($sql_id_cour);
 
+if ($result_id_cour->num_rows > 0) {
+    // output data of each row
+    $row = $result_id_cour->fetch_assoc();
+    $GLOBALS['maxid_courier'] = $row["maxid_cour"] + 1;
 
+} else {
+    echo "0 results";
+}
 
+$sql_id = "SELECT MAX(transid)as maxid FROM tblMain";
+$result_id = $conn_all->query($sql_id);
 
-<?php
- 
+if ($result_id->num_rows > 0) {
+    // output data of each row
+    $row = $result_id->fetch_assoc();
+    $GLOBALS['maxtransid'] = $row["maxid"] + 1;
 
- // Create connection
- $conn_id_cour = new mysqli($servername, $username, $password, $dbname);
- // Check connection
- if ($conn_id_cour->connect_error) {
-     die("Connection failed: " . $conn->connect_error);
- }
- mysqli_set_charset($conn_id_cour,"utf8");
- $sql_id_cour = "SELECT MAX(ID_EN)as maxid_cour FROM tblMem where ID_EN <96";
- $result_id_cour = $conn_id_cour->query($sql_id_cour);
- 
- if ($result_id_cour->num_rows > 0) {
-     // output data of each row
-     $row = $result_id_cour->fetch_assoc();
-          $GLOBALS['maxid_courier']= $row["maxid_cour"]+1;
-     
- } else {
-     echo "0 results";
- }
- $conn_id_cour->close();
- ?> 
+} else {
+    echo "0 results";
+}
 
+$sql_idx = "SELECT MAX(idx)as maxidx FROM tblMain";
+$result_idx = $conn_all->query($sql_idx);
 
+if ($result_idx->num_rows > 0) {
+    // output data of each row
+    $row = $result_idx->fetch_assoc();
+    $GLOBALS['maxidx'] = $row["maxidx"] + 1;
 
-<?php
- 
+} else {
+    echo "0 results";
+}
+?>
 
- // Create connection
- $conn_trans_id = new mysqli($servername, $username, $password, $dbname);
- // Check connection
- if ($conn_trans_id->connect_error) {
-     die("Connection failed: " . $conn->connect_error);
- }
- mysqli_set_charset($conn_trans_id,"utf8");
- $sql_id = "SELECT MAX(transid)as maxid FROM tblMain";
- $result_id = $conn_trans_id->query($sql_id);
- 
- if ($result_id->num_rows > 0) {
-     // output data of each row
-     $row = $result_id->fetch_assoc();
-           $GLOBALS['maxtransid']= $row["maxid"]+1;
-     
- } else {
-     echo "0 results";
- }
- $conn_trans_id->close();
- ?> 
-
-
-
- <?php
- 
-
- // Create connection
- $conn_idx_tblMain = new mysqli($servername, $username, $password, $dbname);
- // Check connection
- if ($conn_idx_tblMain->connect_error) {
-     die("Connection failed: " . $conn->connect_error);
- }
- mysqli_set_charset($conn_idx_tblMain,"utf8");
- $sql_idx = "SELECT MAX(idx)as maxidx FROM tblMain";
- $result_idx = $conn_idx_tblMain->query($sql_idx);
- 
- if ($result_idx->num_rows > 0) {
-     // output data of each row
-     $row = $result_idx->fetch_assoc();
-           $GLOBALS['maxidx']= $row["maxidx"]+1;
-     
- } else {
-     echo "0 results";
- }
- $conn_idx_tblMain->close();
- ?> 
- 
  <script>
 
  function submitFunction(){
@@ -293,36 +129,36 @@ document.getElementById("ag_name_mod").innerHTML="Name:"+ag_name;
 var trans_id=   document.getElementById("trans_id").value ;
   document.getElementById("trans_id_mod").innerHTML="Transaction ID:"+trans_id;
 
-   
+
   var ag_addr=   document.getElementById("ag_addr").value ;
   document.getElementById("ag_addr_mod").innerHTML="Address:"+ag_addr;
-  
+
   var id_district=   document.getElementById("id_district").value ;
   document.getElementById("id_dis_mod").innerHTML="District:"+id_district;
   var ag_ps=   document.getElementById("upazila").value ;
   document.getElementById("ag_ps_mod").innerHTML="Police Station:"+ag_ps;
- 
+
   var ag_po=   document.getElementById("postoffice").value ;
   document.getElementById("ag_po_mod").innerHTML="Post Office:"+ag_po;
- 
+
   var ag_poffice_bn=   document.getElementById("ag_poffice_bn").value ;
   document.getElementById("ag_poffice_bn_mod").innerHTML="POST/BN:"+ag_poffice_bn;
- 
+
   var ag_mobile1=   document.getElementById("ag_mobile1").value ;
   document.getElementById("ag_mobile1_mod").innerHTML="Phone 1:"+ag_mobile1;
- 
+
   var ag_mobile2=   document.getElementById("ag_mobile2").value ;
   document.getElementById("ag_mobile2_mod").innerHTML="Phone 2:"+ag_mobile2;
- 
+
   var ag_copies=   document.getElementById("ag_copies").value ;
   document.getElementById("ag_copies_mod").innerHTML="Agent Copies:"+ag_copies;
- 
+
   var ag_email=   document.getElementById("ag_email").value ;
   document.getElementById("ag_email_mod").innerHTML="Email:"+ag_email;
- 
+
   var ag_comment=   document.getElementById("ag_comment").value ;
   document.getElementById("ag_comment_mod").innerHTML="Comment:"+ag_comment;
- 
+
  }
 
   </script>
@@ -357,7 +193,7 @@ function upazilaFunction(str) {
     }
 
 
-    
+
 }
 </script>
 
@@ -384,7 +220,7 @@ function postofficeFunction(str) {
 
 
 
- 
+
             }
         };
         xmlhttp.open("GET","postoffice.php?q="+str,true);
@@ -392,102 +228,14 @@ function postofficeFunction(str) {
     }
 
 
-    
+
 }
 </script>
 <div class="container-fluid">
 
 <div class="row" style= "height: 100%;" >
+<?php include 'Layout/sidebar.php';?>
 
-<div id="wrapper" class="col-md-2 col-xl-2">
-
-  <!-- Sidebar -->
-  
-	<br> <br>
-    <div class="col-sm-12 col-lg-12" style="text-align: center;">
-        <p><img src="front_images/hklogo.gif" height="100" width="100" alt="HKS"></p>
-        <h5 style="font-family: 'Leckerli One', cursive; color: white;" > Hare Krishna Samacar</h5>
-    </div>
-  
-  
-  
-    <div id="accordion">
-  
-    <div class="card">
-      <div class="card-header">
-        <a class="card-link" href="hks_dashboard.php"> Dashboard</a>
-      </div>
-    </div>
-	
-    <div class="card">
-      <div class="card-header">
-        <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo"> Agents  </a>
-      </div>
-      <div id="collapseTwo" class="collapse" data-parent="#accordion">
-        <div class="card-body">
-			<a href="hks_agent_new.php" > New Agent </a> <br>
-			<a href="hks_agent_book.php" > Agent Book </a> 
-        </div>
-      </div>
-    </div>
-	
-	<div class="card">
-      <div class="card-header">
-        <a class="collapsed card-link" data-toggle="collapse" href="#collapse3"> Subscribers  </a>
-      </div>
-      <div id="collapse3" class="collapse" data-parent="#accordion">
-        <div class="card-body">
-			<a href="hks_subs_new.php"> New Subscriber </a> <br>
-			<a href="hks_subs_book.php"> Subscriber Book </a> 
-		</div>
-      </div>
-    </div>
-	
-	<div class="card">
-      <div class="card-header">
-        <a class="collapsed card-link" href="hks_products.php"> Products  </a>
-      </div>
-    </div>
-	
-	<div class="card">
-      <div class="card-header">
-        <a class="collapsed card-link" data-toggle="collapse" href="#collapse5"> Cash Memo  </a>
-      </div>
-      <div id="collapse5" class="collapse" data-parent="#accordion">
-        <div class="card-body">
-			<a href="hks_cash_retail.php" > Retail Sale </a> <br>
-			<a href="hks_cash_post.php" > Courier & Post Office </a>			  
-        </div>
-      </div>
-    </div>
-	
-	<div class="card">
-      <div class="card-header">
-        <a class="collapsed card-link"  href="hks_send_newspaper.php"> Send Newspaper  </a>
-      </div>
-    </div>
-	
-	<div class="card">
-      <div class="card-header">
-        <a class="collapsed card-link" href="hks_acc_summ.php"> Accounts  </a>
-      </div>
-    </div>
-	
-	
-    <div class="card">
-      <div class="card-header">
-        <a class="collapsed card-link" href="#collapse9"> Settings    </a>
-      </div>
-    </div> 
-  
-  </div> <!-- End of Accordion -->
-  
-		<div style="text-align:center; position: fixed; bottom: 0;">
-           <p style= "cursor: pointer;text-align:center; color: yellow;" > Powered by <br> <a href="https://www.facebook.com/harekrishnasamacar/" target="_blank" style="color: white;" >@HareKrishnaSamacarIT</a> <br> <?php echo date("d-m-Y"); ?> </p>
-         <br>  <?php include_once "hks_user.php" ;   ?>
-        </div>
-</div>
-  
 <div class="col-md-10 col-xl-10">
 
 
@@ -505,7 +253,7 @@ function postofficeFunction(str) {
                     <div class="col-sm-12 contact-form"> <!-- div da direita -->
                         <form id="contact" method="post" class="form" role="form" target='iframe_ag_new' action ="hks_agent_new_data.php" >
                             <div class="row">
-							
+
 								<div class="col-xs-6 col-md-6 form-group">
                                     <select required class="form-control"id="paymode_option" onchange="paymode_Option()" name="ag_type" required autofocus >
                                         <option value="Receive Mode">Receive Mode</option>
@@ -513,13 +261,13 @@ function postofficeFunction(str) {
                                         <option value="Courier">Courier </option>
  									</select>
                                 </div>
-							
+
                                 <div class="col-xs-6 col-md-6 form-group">
-                                 
+
                                  <input class="form-control" id="agent_number" name="ag_number"  type="text"/>
 
-                                <input class="form-control" id="trans_id" name="trans_id" value="<?php echo  $GLOBALS['maxtransid'];?>" type="hidden"/>
-                                <input class="form-control" id="inputCNPJ" name="maxidx_tblmain" value="<?php echo  $GLOBALS['maxidx'];?>" type="hidden" />
+                                <input class="form-control" id="trans_id" name="trans_id" value="<?php echo $GLOBALS['maxtransid']; ?>" type="hidden"/>
+                                <input class="form-control" id="inputCNPJ" name="maxidx_tblmain" value="<?php echo $GLOBALS['maxidx']; ?>" type="hidden" />
                                 </div>
 
 <div id="courier" style="display:none" >
@@ -544,78 +292,63 @@ function postofficeFunction(str) {
                                     <input required class="form-control" id="ag_addr" name="ag_addr" placeholder="Address" type="text" />
                                 </div>
                             </div>
-							
-                            <div class="row">							
-							
+
+                            <div class="row">
+
                                 <div class="col-xs-4 col-md-4 form-group">
-                                    
+
 <select   class="form-control"id="id_district" name="ag_dist" onchange="upazilaFunction(this.value);postofficeFunction(this.value)"  >
 <option>District</option>
 <?php
 
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
 $sql = "SELECT id, district_name FROM districts order by district_name asc";
-$result = $conn->query($sql);
+$result = $conn_all->query($sql);
 
 if ($result->num_rows > 0) {
-     // output data of each row
-    while($row = $result->fetch_assoc()) {
-      echo "<option value =".$row['id'].$row['district_name'].">".dist_en_bn($row['id'].$row['district_name'])."</option>";
- 
+    // output data of each row
+    while ($row = $result->fetch_assoc()) {
+        echo "<option value =" . $row['id'] . $row['district_name'] . ">" . dist_en_bn($row['id'] . $row['district_name']) . "</option>";
 
-        
     }
- } else {
- }
-$conn->close();
-
-
-
- 
-
-
+} else {
+}
 
 ?>
 
 </select>
 
                                 </div>
-								
+
                                 <div class="col-xs-4 col-md-4 form-group">
-                                <select required class="form-control"id="upazila" name="ag_ps"onchange="upzilaFunction(this.value)"  >
-                                       
- 
+                                <select required class="form-control"id="upazila" name="ag_ps" onchange="upzilaFunction(this.value)"  >
+
+
                                 </select>
                                 </div>
                                 <div class="col-xs-4 col-md-4 form-group">
                                     <select class="form-control"id="postoffice" name="ag_po" >
-                                       
- 
 
- 
+
+
+
 									</select>
                                 </div>
                                 <div class="col-xs-4 col-md-4 form-group">
 									<input required class="form-control" id="ag_poffice_bn" name="ag_poffice_bn" placeholder="POST-BANGLA" type="text" />
 								</div>
-							
+
                                 <div class="col-xs-6 col-md-6 form-group">
                                     <input required class="form-control" id="ag_mobile1" minlength="11" maxlength="11" size="11"   name="ag_mobile1" placeholder="Mobile 1" type="text" required/>
                                 </div>
 								<div class="col-xs-6 col-md-6 form-group">
                                     <input class="form-control" id="ag_mobile2" minlength="11" maxlength="11" size="11"  name="ag_mobile2" placeholder="Mobile 2" type="text" />
                                 </div>
-								
+
 								<div class="col-xs-4 col-md-3 form-group">
                                 <input required  required class="form-control" id="news_rate" name="news_rate" placeholder="@" type="text" />
-  
+
                                 </div>
-								
+
 								<div class="col-xs-4 col-md-3 form-group">
                                     <input required class="form-control" id="ag_copies" name="ag_copies" placeholder="No. Copies" type="text" />
                                 </div>
@@ -624,13 +357,13 @@ $conn->close();
                                 </div>
 
 
-                                 
+
 
                                 <div class="col-xs-4 col-md-6 form-group">
                                     <input required  class="form-control" id="ag_date" name="ag_date" value="<?php echo date("Y-m-d"); ?> " type="date" />
                                 </div>
                             </div>
- 
+
 							<div class="row">
 								<div class="col-xs-4 col-md-8 form-group">
 									<div class="controls">
@@ -644,7 +377,7 @@ $conn->close();
 							</div>
                         </form>
                     </div> <!-- fim div da direita -->
-				 
+
                 </div> <!-- fim div da esquerda -->
             </div>
 			<hr>
@@ -661,137 +394,79 @@ $conn->close();
 				</tr>
 			  </thead>
 		      <tbody>
-					 
-              <?php
 
- 
-$servername = "localhost";
-$username = "HKSamacar_local";
-$password = "Jpsk/1866";
-$dbname = "HareKrishnaSamacar";
-
-// Create connection
-
- 
-  
-
-// Create connection
-$conn_all = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn_all->connect_error) {
-    die("Connection failed: " . $conn_all->connect_error);
-}
-mysqli_set_charset($conn_all,"utf8");
+<?php
 $sql_all = "SELECT ID_EN,Name,Des,Org,vill,comment,po,ps,dist,mob,phone,email FROM tblMem where ID_EN<10000  ";
 $result_all = $conn_all->query($sql_all);
 
 if ($result_all->num_rows > 0) {
     // output data of each row
-    while($row = $result_all->fetch_assoc()){
-   $aa=  array($row["ID_EN"],$row["Name"]);        
+    while ($row = $result_all->fetch_assoc()) {
+        $aa = array($row["ID_EN"], $row["Name"]);
 
-echo '<tr>
+        echo '<tr>
 
-<td>'.$row["ID_EN"].'</td>
- 
-<td> <form method="post" action="ag_individual_mod_data.php" target="iframe_ag_individual_mod"> <input type="hidden" name="id_en" value="'.$row["ID_EN"].'"><button type ="submit" class="btn btn-danger"  data-toggle="modal" data-target="#myModal_agent"  onclick="modFunction(this.value)" >'.$row["Name"].'</button></form></td>
+<td>' . $row["ID_EN"] . '</td>
 
-<td>'.$row["Des"].','.$row["Org"].','.$row["vill"].','.$row["po"].','.$row["ps"].'</td>
+<td> <form method="post" action="ag_individual_mod_data.php" target="iframe_ag_individual_mod"> <input type="hidden" name="id_en" value="' . $row["ID_EN"] . '"><button type ="submit" class="btn btn-danger"  data-toggle="modal" data-target="#myModal_agent"  onclick="modFunction(this.value)" >' . $row["Name"] . '</button></form></td>
+
+<td>' . $row["Des"] . ',' . $row["Org"] . ',' . $row["vill"] . ',' . $row["po"] . ',' . $row["ps"] . '</td>
 
 
-<td>'.$row["dist"].'</td>
-<td>'.$row["mob"]." ".$row["phone"]." ".$row["email"].'</td>
+<td>' . $row["dist"] . '</td>
+<td>' . $row["mob"] . " " . $row["phone"] . " " . $row["email"] . '</td>
 
-<td>'.$row["comment"].'</td>
+<td>' . $row["comment"] . '</td>
 </tr>
 ';
     }
-    
+
 } else {
     echo "0 results";
 }
 $conn_all->close();
 
-                    ?>
+?>
 
 			  </tbody>
-			
+
 			</table>
 			</div>
             </div>
           </div>
         </div>
     </div>
-      
-
-
 
 </div>
-
-
-
 
 </div> <!-- end of row -->
 
 </div> <!-- end of container -->
 
 
-
-
-
-
-
-
   <!-- The Modal agent  -->
   <div class="modal" id="myModal_agent">
     <div class="modal-dialog">
       <div class="modal-content">
-      
-      
-        
-        <!-- Modal body -->
-
         <div class="modal-body">
-        <iframe name='iframe_ag_individual_mod' height="700" width="100%" scrolling="yes" style="border:0"></iframe> 
-
-         
-         
+        <iframe name='iframe_ag_individual_mod' height="700" width="100%" scrolling="yes" style="border:0"></iframe>
         </div>
-        
         <!-- Modal footer -->
         <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
         </div>
-        
+
       </div>
     </div>
   </div>
-  
+
 </div>
 
 
+<iframe name='iframe_ag_new' height="0" width="0" scrolling="no" style="border:0"></iframe>
 
+<iframe name='iframe_ag_new_update' height="0" width="0" scrolling="no" style="border:0"></iframe>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<iframe name='iframe_ag_new' height="0" width="0" scrolling="no" style="border:0"></iframe> 
-
-<iframe name='iframe_ag_new_update' height="0" width="0" scrolling="no" style="border:0"></iframe> 
-
-</body>
 
 <script>
 function paymode_Option() {
@@ -808,19 +483,20 @@ else{
 
 
 }
-     
+
  var id_cour=       "<?php echo $GLOBALS['maxid_courier']; ?>";
  var id_postoffice= "<?php echo $GLOBALS['maxid']; ?>";
  if(x=='Post Office'){
     document.getElementById("agent_number").value = id_postoffice;
- 
+
 }
 
  if(x=='Courier'){
     document.getElementById("agent_number").value = id_cour;
- 
+
 }
 
 }
 </script>
-</html>
+
+<?php include 'Layout/footer.php';?>

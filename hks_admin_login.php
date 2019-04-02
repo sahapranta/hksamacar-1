@@ -4,8 +4,6 @@ session_start();
  session_unset();
 
  ?>
-
-<?php session_start();?>
 <!DOCTYPE html>
 <html><head>
     <meta charset="utf-8">

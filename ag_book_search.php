@@ -1,112 +1,23 @@
-<?php session_start();?>
-<!DOCTYPE html>
-<html>
-<head>
-
-<title>Agent Book</title>
-
-
-  <meta charset="utf-8">
- 
- <link rel="shortcut icon" href="favicon1.ico" />
- <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.bundle.min.js">
- <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js">
- <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
- 
- <link href="https://fonts.googleapis.com/css?family=Leckerli+One" rel="stylesheet">
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
- 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
- 
- 
-
-<style type="text/css">
-
-
-body, html, .container-fluid {
-     height: 100%;
-}
- 
- 
-/* ---Start of Wrapper style ---- */
-
-#wrapper	{
-		background-color: #787878;
-	}
-
-.card-header	{
-	background-color: #3c3c3c;
-	max-height: 40px;
-	padding: 5px;
-	}
-
-.card-link {	
-	color: white;
-	}
-	
-.card-link:Hover {	
-	color: yellow;
-	}
-	
-.card-body {
-	padding: 5px;
-	background-color: #f0f0f0;
-	
-	}
-	
-.card-body a {	
-	color: black;
-	}
-
-
-
-
-/* ---end of Wrapper style ---- */
-
-
-
-
-
-</style>
-
-</head>
- 
+<?php include 'session_check.php';?>
+<?php include 'Layout/header.php';?>
 <body>
  <!-- The Modal -->
  <div class="modal" id="myModal1">
     <div class="modal-dialog">
       <div class="modal-content">
-      
-        
-        
-        <!-- Modal body -->
         <div class="modal-body">
-        
- 
- 
-        <iframe name='ag_book_action_mod' height="220" width="100%" scrolling="no" style="border:0"></iframe> 
-
-        
-        
-         
+        <iframe name='ag_book_action_mod' height="220" width="100%" scrolling="no" style="border:0"></iframe>
         </div>
-        
         <!-- Modal footer -->
         <div class="modal-footer">
           <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
         </div>
-        
+
       </div>
     </div>
   </div>
-  
+
 </div>
-
-
-
 <div class="table-responsive">
 			<table   class="table table-bordered table-sm table-hover">
 			  <thead>
@@ -119,202 +30,96 @@ body, html, .container-fluid {
 					<th>QTY</th>
 					<th>Status</th>
 					<th>Action</th>
-					 
+
 				</tr>
 			  </thead>
 		      <tbody>
-				 
-					                
-
-
-
-
-
-
-
-
-  
-  <?php
-   
-include_once "function.php";
-
-
-
-$type=$_POST["type"];
-
-if($type=="All"){
- 
-$status="%";
-
-}
-
-if($type=="Active"){
-	 
-    $status="CONT";	
-	
-	}
-
-	if($type=="Inactive"){
-		 
-        $status="DISCONT";			
-		
-		}
-  $search=$_POST['ag_search'];
-
-  
-
-  
- 
-$servername = "localhost";
-$username = "HKSamacar_local";
-$password = "Jpsk/1866";
-$dbname = "HareKrishnaSamacar";
-
-// Create connection
-
- 
-  
-
-// Create connection
-$conn_all = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn_all->connect_error) {
-    die("Connection failed: " . $conn_all->connect_error);
-}
-mysqli_set_charset($conn_all,"utf8");
-$sql_all = "SELECT ID_EN,Name,Des,Org,vill,po,ps,dist,mob,phone,email,status,comment,ag_quantity FROM tblMem  where  
-
-    (ID_EN  LIKE '%$search%' 
-
- OR Name  LIKE '%$search%'
- OR Des  LIKE '%$search%'
- OR Org  LIKE '%$search%'
- OR vill  LIKE '%$search%'
- OR po  LIKE '%$search%'
- OR ps  LIKE '%$search%'
- OR dist  LIKE '%$search%'
- OR mob  LIKE '%$search%'
- OR phone  LIKE '%$search%'
- OR email  LIKE '%$search%'
- 
- 
- ) AND (ID_EN<10000) and status like '$status'  ";
-$result_all = $conn_all->query($sql_all);
-
-if ($result_all->num_rows > 0) {
-    // output data of each row
-    while($row = $result_all->fetch_assoc()){
-           
-
-echo '<tr>
-<form method ="post" target="iframe_ag_book_individual_summary" action="ag_book_individual_summary.php">
-<input type="hidden" name="ag_name" value="'.$row["Name"].'">
-<input type="hidden" name="ag_id_en" value="'.$row["ID_EN"].'">
-
-<td>
-
-
-<button  type="submit" class="btn btn-info btn-sm" >'.$row["ID_EN"].'</button>
-</td>
-</form>
-<td> <form method="post" action="ag_individual_mod_data.php" target="iframe_ag_individual_mod"> <input type="hidden" name="id_en" value="'.$row["ID_EN"].'"><button type ="submit" class="btn btn-success"  data-toggle="modal" data-target="#myModal_agent"  onclick="modFunction(this.value)" >'.$row["Name"].'</button></form></td>
-
-
-<td>'.$row["vill"].','.$row["po_bn"].''.$row["po"].','.ps_en_bn(id_ps($row["ID_EN"])).'</td>
-
-<td>'.dist_en_bn(id_dist($row["ID_EN"])).'</td>
-<td>'.$row["mob"].'</td>
-
-<td>'.$row["ag_quantity"].'</td>
-
-<td>'.$row["status"].'</td>
-<td> 
-
-
-<form method ="post" target="ag_book_action_mod" action="ag_book_action_mod_data.php">
-<input type="hidden" name="ag_id_en" value="'.$row["ID_EN"].'">
-<input type="hidden" name="status" value="'.$row["status"].'">
-<input type="hidden" name="ag_quantity" value="'.$row["ag_quantity"].'">
-
-<button  type="submit" data-target="#myModal1" data-toggle="modal" class="btn btn-warning btn-sm" > <i class="fal fa-paper-plane"></i></button>
-</form>
-</td>
-
- 
-
-</tr>
-';
+<?php
+    $type = "All";
+    if($_POST['type']){
+      $type = $_POST["type"];
     }
-    
+    if ($type == "All") {
+        $status = "%";
+    }
+    if ($type == "Active") {
+        $status = "CONT";
+    }
+    if ($type == "Inactive") {
+        $status = "DISCONT";
+    }
+    $search = $_POST['ag_search'];
+    $sql_all = "SELECT ID_EN,Name,Des,Org,vill,po,ps,dist,mob,phone,email,status,comment,ag_quantity FROM tblMem  where
+        (ID_EN  LIKE '%$search%'
+    OR Name  LIKE '%$search%'
+    OR Des  LIKE '%$search%'
+    OR Org  LIKE '%$search%'
+    OR vill  LIKE '%$search%'
+    OR po  LIKE '%$search%'
+    OR ps  LIKE '%$search%'
+    OR dist  LIKE '%$search%'
+    OR mob  LIKE '%$search%'
+    OR phone  LIKE '%$search%'
+    OR email  LIKE '%$search%'
+    ) AND (ID_EN<10000) AND status LIKE '$status' ";
+    $result_all = $conn_all->query($sql_all);
+    if ($result_all->num_rows > 0) {
+        while ($row = $result_all->fetch_assoc()) {
+          $en_id = ps_en_bn(id_ps($row['ID_EN']));
+          $bn_dist = dist_en_bn(id_dist($row['ID_EN']));
+        echo "<tr>
+  <td>
+    <form method ='post' target='iframe_ag_book_individual_summary' action='ag_book_individual_summary.php'>
+      <input type='hidden' name='ag_name' value='{$row["Name"]}'>
+      <input type='hidden' name='ag_id_en' value='{$row["ID_EN"]}'>
+      <button  type='submit' class='btn btn-info btn-sm' >{$row["ID_EN"]}</button>
+    </form>
+  </td>
+  <td>
+    <form method='post' action='ag_individual_mod_data.php' target='iframe_ag_individual_mod'>
+      <input type='hidden' name='id_en' value='{$row["ID_EN"]}'>
+      <button type ='submit' class='btn btn-success'  data-toggle='modal' data-target='#myModal_agent'>{$row["Name"]}</button>
+    </form>
+  </td>
+  <td>{$row["vill"]}, {$row["po"]}, {$en_id}</td>
+  <td>{$bn_dist}</td>
+  <td>{$row["mob"]}</td>
+  <td>{$row["ag_quantity"]}</td>
+  <td>{$row["status"]}</td>
+  <td>
+    <form method ='post' target='ag_book_action_mod' action='ag_book_action_mod_data.php'>
+      <input type='hidden' name='ag_id_en' value='{$row["ID_EN"]}'>
+      <input type='hidden' name='status' value='{$row["status"]}'>
+      <input type='hidden' name='ag_quantity' value='{$row["ag_quantity"]}'>
+      <button  type='submit' data-target='#myModal1' data-toggle='modal' class='btn btn-warning btn-sm' >
+        <i class='fa fa-paper-plane'></i>
+      </button>
+    </form>
+  </td>
+</tr>
+";
+    }
+
 } else {
     echo "0 results";
 }
-$conn_all->close();
-
-                    ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-					</tbody>
-			</table>
-			</div>
-			 
-                   
-
-                  
+?>
+    </tbody>
+</table>
+</div>
 <!-- The Modal agent  -->
 <div class="modal" id="myModal_agent">
-    <div class="modal-dialog">
-      <div class="modal-content">
-      
-      
-        
-        <!-- Modal body -->
-
-        <div class="modal-body">
-        <iframe name='iframe_ag_individual_mod' height="620" width="100%" scrolling="no" style="border:0"></iframe> 
-
-         
-         
-        </div>
-        
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-        </div>
-        
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal body -->
+      <div class="modal-body">
+      <iframe name='iframe_ag_individual_mod' height="620" width="100%" scrolling="no" style="border:0"></iframe>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
-  
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-			 
-            </body>
-            </html>
+</div>
+<?php include 'Layout/footer.php';?>
